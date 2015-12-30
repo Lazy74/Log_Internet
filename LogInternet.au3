@@ -15,11 +15,7 @@
 If FileExists("Сам файл.") Then
    _FileCreate("C:\FTPP\LogInternet.txt")
 EndIf
-
-
-
-
-
+;===>>> Добавить цикл
 if Ping("ya.ru") Then
    ElseIf Ping ("google.com") Then
 	  ElseIf Ping ("mail.ru") Then
@@ -32,3 +28,4 @@ else
    FileClose($LogFile)
 EndIf
 
+;===>>> Добавить цикл

@@ -11,21 +11,50 @@
 ; Script Start - Add your code below here
 #include <File.au3>
 
-
-If FileExists("Сам файл.") Then
+If FileExists("C:\FTPP\LogInternet.txt") = 0 Then
    _FileCreate("C:\FTPP\LogInternet.txt")
 EndIf
-;===>>> Добавить цикл
-if Ping("ya.ru") Then
+
+While 1
+   $ms=""
+   if Ping("ya.ru") Then
    ElseIf Ping ("google.com") Then
-	  ElseIf Ping ("mail.ru") Then
-else
-   $LogFile = FileOpen ( "C:\FTPP\LogInternet.txt", 1 )
-   if $LogFile = -1 Then
-	  Exit
+   ElseIf Ping ("mail.ru") Then
+   else
+	  $LogFile = FileOpen ( "C:\FTPP\LogInternet.txt", 1 )
+	  if $LogFile = -1 Then
+		 Exit
+	  EndIf
+	  FileWrite($LogFile, "> " & @MDAY & '.' & @MON & '.' & @YEAR & "__" & @HOUR & ':' & @MIN & ':' & @SEC & @TAB & "Нет интернета!" & @CRLF )
+	  FileClose($LogFile)
+	  $ms=">>> Интернета нет с " & @HOUR & ':' & @MIN & ':' & @SEC & " По "
+	  $Flag = 1
+	  While $Flag
+		 if Ping("ya.ru") = 0 Then
+		 ElseIf Ping ("google.com") = 0 Then
+		 ElseIf Ping ("mail.ru") = 0 Then
+		 Else
+			$Flag = 0
+			$LogFile = FileOpen ( "C:\FTPP\LogInternet.txt", 1 )
+			if $LogFile = -1 Then
+			   Exit
+			EndIf
+			FileWrite($LogFile, $ms & @HOUR & ':' & @MIN & ':' & @SEC & @CRLF)
+			FileClose($LogFile)
+		 EndIf
+		 Sleep(5000)
+	  WEnd
    EndIf
-   FileWrite($LogFile, "> " & @MDAY & '.' & @MON & '.' & @YEAR & "__" & @HOUR & ':' & @MIN & ':' & @SEC & @TAB & "Нет интернета!" & @CRLF )
-   FileClose($LogFile)
-EndIf
+   Sleep(10000)
+WEnd
+
 
 ;===>>> Добавить цикл
+
+
+;===>>> Добавить цикл
+#cs
+
+
+
+#ce

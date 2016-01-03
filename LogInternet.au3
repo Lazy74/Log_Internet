@@ -13,7 +13,15 @@
 
 If FileExists("C:\FTPP\LogInternet.txt") = 0 Then
    _FileCreate("C:\FTPP\LogInternet.txt")
-EndIf
+   $LogFile = FileOpen ( "C:\FTPP\LogInternet.txt", 1 )
+   FileWrite($LogFile,"> " & @MDAY & '.' & @MON & '.' & @YEAR & "__" & @HOUR & ':' & @MIN & ':' & @SEC & @TAB & "Старт программы" & @CRLF )
+   FileClose($LogFile)
+Else
+   $LogFile = FileOpen ( "C:\FTPP\LogInternet.txt", 1 )
+   FileWrite($LogFile,@CRLF & "> " & @MDAY & '.' & @MON & '.' & @YEAR & "__" & @HOUR & ':' & @MIN & ':' & @SEC & @TAB & "Старт программы" & @CRLF )
+   FileClose($LogFile)
+   EndIf
+
 
 While 1
    $ms=""
@@ -21,7 +29,6 @@ While 1
    ElseIf Ping ("google.com") Then
    ElseIf Ping ("mail.ru") Then
    else
-	  $LogFile = FileOpen ( "C:\FTPP\LogInternet.txt", 1 )
 	  if $LogFile = -1 Then
 		 Exit
 	  EndIf

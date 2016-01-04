@@ -9,21 +9,26 @@
 #ce ----------------------------------------------------------------------------
 
 ; Script Start - Add your code below here
+; Запуск скрипта только с параметром. Один входной параметр, в котором указывается номер торговой точки в Яндекс диске
+
 #include <File.au3>
 
-If FileExists("C:\FTPP\LogInternet.txt") = 0 Then		; Проверка существует ли файл, Соднание файла, открытие и запись
-   _FileCreate("C:\FTPP\LogInternet.txt")
-   $LogFile = FileOpen ( "C:\FTPP\LogInternet.txt", 1 )
+$numberTT = $CmdLine[1]		; Номер торговой точки
+$PathToFile = "C:\YandexDisk\TT_" & $CmdLine[1] & "\LogInternet.txt"		; Путь к лог файлу
+
+If FileExists($PathToFile) = 0 Then		; Проверка существует ли файл, Соднание файла, открытие и запись
+   _FileCreate($PathToFile)
+   $LogFile = FileOpen ($PathToFile, 1 )
    FileWrite($LogFile,"> " & @MDAY & '.' & @MON & '.' & @YEAR & "__" & @HOUR & ':' & @MIN & ':' & @SEC & @TAB & "Старт программы" & @CRLF )
    FileClose($LogFile)
 Else
-   $LogFile = FileOpen ( "C:\FTPP\LogInternet.txt", 1 )
+   $LogFile = FileOpen ($PathToFile, 1 )
    FileWrite($LogFile,@CRLF & "> " & @MDAY & '.' & @MON & '.' & @YEAR & "__" & @HOUR & ':' & @MIN & ':' & @SEC & @TAB & "Старт программы" & @CRLF )
    FileClose($LogFile)
    EndIf
 
 While 1		; Основной цикл
-   $ms=""		; Переменная для формирования сообщения о переоде отсутствия интернета
+   $ms=""		; Переменная для формирования сообщения о периоде отсутствия интернета
    if Ping("ya.ru") Then		; Пинг серверов
    ElseIf Ping ("google.com") Then
    ElseIf Ping ("mail.ru") Then

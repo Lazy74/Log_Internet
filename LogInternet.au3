@@ -33,6 +33,7 @@ While 1		; Основной цикл
    ElseIf Ping ("google.com") Then
    ElseIf Ping ("mail.ru") Then
    else		; Действия, если пинг не прошел
+	  $LogFile = FileOpen ($PathToFile, 1 )
 	  if $LogFile = -1 Then		; если не получилось получить доступк к файлу
 		 Exit		;  выход
 	  EndIf
@@ -46,6 +47,7 @@ While 1		; Основной цикл
 		 ElseIf Ping ("mail.ru") = 0 Then
 		 Else
 			$Flag = 0
+			$LogFile = FileOpen ($PathToFile, 1 )
 			if $LogFile = -1 Then
 			   Exit
 			EndIf

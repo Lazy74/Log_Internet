@@ -19,11 +19,11 @@ $PathToFile = "C:\YandexDisk\TT_" & $CmdLine[1] & "\LogInternet.txt"		; Путь
 If FileExists($PathToFile) = 0 Then		; Проверка существует ли файл, Соднание файла, открытие и запись
    _FileCreate($PathToFile)
    $LogFile = FileOpen ($PathToFile, 1 )
-   FileWrite($LogFile,"> " & @MDAY & '.' & @MON & '.' & @YEAR & "__" & @HOUR & ':' & @MIN & ':' & @SEC & @TAB & "Старт программы" & @CRLF )
+   FileWrite($LogFile,">  " & @MDAY & '.' & @MON & '.' & @YEAR & "  " & @HOUR & ':' & @MIN & ':' & @SEC & @TAB & "Старт программы" & @CRLF )
    FileClose($LogFile)
 Else
    $LogFile = FileOpen ($PathToFile, 1 )
-   FileWrite($LogFile,@CRLF & "> " & @MDAY & '.' & @MON & '.' & @YEAR & "__" & @HOUR & ':' & @MIN & ':' & @SEC & @TAB & "Старт программы" & @CRLF )
+   FileWrite($LogFile,@CRLF & ">  " & @MDAY & '.' & @MON & '.' & @YEAR & "  " & @HOUR & ':' & @MIN & ':' & @SEC & @TAB & "Старт программы" & @CRLF )
    FileClose($LogFile)
    EndIf
 
@@ -37,7 +37,7 @@ While 1		; Основной цикл
 	  if $LogFile = -1 Then		; если не получилось получить доступк к файлу
 		 Exit		;  выход
 	  EndIf
-	  FileWrite($LogFile, "> " & @MDAY & '.' & @MON & '.' & @YEAR & " " & @HOUR & ':' & @MIN & ':' & @SEC & @TAB & "Нет интернета!" & @CRLF )
+	  FileWrite($LogFile, ">  " & @MDAY & '.' & @MON & '.' & @YEAR & "  " & @HOUR & ':' & @MIN & ':' & @SEC & @TAB & "Нет интернета!" & @CRLF )
 	  FileClose($LogFile)
 	  $ms=">>> Интернета нет с " & @HOUR & ':' & @MIN & ':' & @SEC & " По "
 	  $Flag = 1

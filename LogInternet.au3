@@ -37,7 +37,7 @@ While 1		; Основной цикл
 	  if $LogFile = -1 Then		; если не получилось получить доступк к файлу
 		 Exit		;  выход
 	  EndIf
-	  FileWrite($LogFile, "> " & @MDAY & '.' & @MON & '.' & @YEAR & "__" & @HOUR & ':' & @MIN & ':' & @SEC & @TAB & "Нет интернета!" & @CRLF )
+	  FileWrite($LogFile, "> " & @MDAY & '.' & @MON & '.' & @YEAR & " " & @HOUR & ':' & @MIN & ':' & @SEC & @TAB & "Нет интернета!" & @CRLF )
 	  FileClose($LogFile)
 	  $ms=">>> Интернета нет с " & @HOUR & ':' & @MIN & ':' & @SEC & " По "
 	  $Flag = 1

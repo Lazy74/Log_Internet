@@ -19,18 +19,15 @@ $PathToFile = "C:\YandexDisk\TT_" & $CmdLine[1] & "\LogInternet.txt"		; Путь
 If FileExists($PathToFile) = 0 Then		; Проверка существует ли файл, Соднание файла, открытие и запись
    _FileCreate($PathToFile)
    $LogFile = FileOpen ($PathToFile, 1 )
-   FileWrite($LogFile,">  " & @MDAY & '.' & @MON & '.' & @YEAR & "  " & @HOUR & ':' & @MIN & ':' & @SEC & @TAB & "Старт программы" & @CRLF )
    FileWrite($LogFile, TimeMs() & "Старт программы" & @CRLF )
    FileClose($LogFile)
 Else
    $LogFile = FileOpen ($PathToFile, 1 )
-   FileWrite($LogFile,@CRLF & ">  " & @MDAY & '.' & @MON & '.' & @YEAR & "  " & @HOUR & ':' & @MIN & ':' & @SEC & @TAB & "Старт программы" & @CRLF )
    FileWrite($LogFile, @CRLF & TimeMs() & "Старт программы" & @CRLF )
    FileClose($LogFile)
    EndIf
 
 While 1		; Основной цикл
-   $ms=""		; Переменная для формирования сообщения о периоде отсутствия интернета
    ;$ms=""		; Переменная для формирования сообщения о периоде отсутствия интернета
    if Ping("ya.ru") Then		; Пинг серверов
    ElseIf Ping ("google.com") Then
@@ -38,12 +35,10 @@ While 1		; Основной цикл
    else		; Действия, если пинг не прошел
 	  $LogFile = FileOpen ($PathToFile, 1 )
 	  if $LogFile = -1 Then		; если не получилось получить доступк к файлу
-		 Exit		;  выход
+		 ContinueLoop		;  Переход к следующей итерации
 	  EndIf
-	  FileWrite($LogFile, ">  " & @MDAY & '.' & @MON & '.' & @YEAR & "  " & @HOUR & ':' & @MIN & ':' & @SEC & @TAB & "Нет интернета!" & @CRLF )
 	  FileWrite($LogFile, TimeMs() & "Интернета нет с " & @HOUR & ':' & @MIN & ':' & @SEC & " По ")
 	  FileClose($LogFile)
-	  $ms=">>> Интернета нет с " & @HOUR & ':' & @MIN & ':' & @SEC & " По "
 	  $Flag = 1
 	  While $Flag		; цикл отслеживающий как долго не было интернета и формирование информационного сообщения
 		 if Ping("ya.ru") = 0 Then
@@ -53,7 +48,7 @@ While 1		; Основной цикл
 			$Flag = 0
 			$LogFile = FileOpen ($PathToFile, 1 )
 			if $LogFile = -1 Then
-			   Exit
+			   ContinueLoop
 			EndIf
 			FileWrite($LogFile, $ms & @HOUR & ':' & @MIN & ':' & @SEC & @CRLF)
 			FileClose($LogFile)

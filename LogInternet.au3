@@ -19,16 +19,23 @@ $PathToFile = "C:\YandexDisk\TT_" & $CmdLine[1] & "\LogInternet.txt"		; Путь
 If FileExists($PathToFile) = 0 Then		; Проверка существует ли файл, Соднание файла, открытие и запись
    _FileCreate($PathToFile)
    $LogFile = FileOpen ($PathToFile, 1 )
-   FileWrite($LogFile, TimeMs() & "Старт программы" & @CRLF )
+   FileWrite($LogFile, TimeMs() & "Старт программы" & @CRLF)
    FileClose($LogFile)
 Else
-   $LogFile = FileOpen ($PathToFile, 1 )
-   FileWrite($LogFile, @CRLF & TimeMs() & "Старт программы" & @CRLF )
+   $LogFile = FileOpen ($PathToFile)
+   $len = StringLen (FileReadLine ($LogFile,-1))
    FileClose($LogFile)
+
+   $LogFile = FileOpen ($PathToFile,1)
+   if ($len <> 52) Then
+	  FileWrite($LogFile, @CRLF & TimeMs() & "Старт программы" & @CRLF)
+   Else
+	  FileWrite($LogFile, @CRLF & @CRLF & TimeMs() & "Старт программы" & @CRLF)
    EndIf
+   FileClose($LogFile)
+EndIf
 
 While 1		; Основной цикл
-   ;$ms=""		; Переменная для формирования сообщения о периоде отсутствия интернета
    if Ping("ya.ru") Then		; Пинг серверов
    ElseIf Ping ("google.com") Then
    ElseIf Ping ("mail.ru") Then
@@ -50,7 +57,7 @@ While 1		; Основной цикл
 			if $LogFile = -1 Then
 			   ContinueLoop
 			EndIf
-			FileWrite($LogFile, $ms & @HOUR & ':' & @MIN & ':' & @SEC & @CRLF)
+			FileWrite($LogFile, @HOUR & ':' & @MIN & ':' & @SEC & @CRLF)
 			FileClose($LogFile)
 		 EndIf
 		 Sleep(2000)

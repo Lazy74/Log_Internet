@@ -20,15 +20,18 @@ If FileExists($PathToFile) = 0 Then		; Проверка существует л�
    _FileCreate($PathToFile)
    $LogFile = FileOpen ($PathToFile, 1 )
    FileWrite($LogFile,">  " & @MDAY & '.' & @MON & '.' & @YEAR & "  " & @HOUR & ':' & @MIN & ':' & @SEC & @TAB & "Старт программы" & @CRLF )
+   FileWrite($LogFile, TimeMs() & "Старт программы" & @CRLF )
    FileClose($LogFile)
 Else
    $LogFile = FileOpen ($PathToFile, 1 )
    FileWrite($LogFile,@CRLF & ">  " & @MDAY & '.' & @MON & '.' & @YEAR & "  " & @HOUR & ':' & @MIN & ':' & @SEC & @TAB & "Старт программы" & @CRLF )
+   FileWrite($LogFile, @CRLF & TimeMs() & "Старт программы" & @CRLF )
    FileClose($LogFile)
    EndIf
 
 While 1		; Основной цикл
    $ms=""		; Переменная для формирования сообщения о периоде отсутствия интернета
+   ;$ms=""		; Переменная для формирования сообщения о периоде отсутствия интернета
    if Ping("ya.ru") Then		; Пинг серверов
    ElseIf Ping ("google.com") Then
    ElseIf Ping ("mail.ru") Then
@@ -38,6 +41,7 @@ While 1		; Основной цикл
 		 Exit		;  выход
 	  EndIf
 	  FileWrite($LogFile, ">  " & @MDAY & '.' & @MON & '.' & @YEAR & "  " & @HOUR & ':' & @MIN & ':' & @SEC & @TAB & "Нет интернета!" & @CRLF )
+	  FileWrite($LogFile, TimeMs() & "Интернета нет с " & @HOUR & ':' & @MIN & ':' & @SEC & " По ")
 	  FileClose($LogFile)
 	  $ms=">>> Интернета нет с " & @HOUR & ':' & @MIN & ':' & @SEC & " По "
 	  $Flag = 1
@@ -59,3 +63,7 @@ While 1		; Основной цикл
    EndIf
    Sleep(10000)
 WEnd
+
+Func TimeMs()
+   Return ">  " & @MDAY & '.' & @MON & '.' & @YEAR & "  " & @HOUR & ':' & @MIN & ':' & @SEC & @TAB
+EndFunc

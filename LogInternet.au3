@@ -12,6 +12,7 @@
 ; Запуск скрипта только с параметром. Один входной параметр, в котором указывается номер торговой точки в Яндекс диске
 
 #include <File.au3>
+#include <Date.au3>
 
 $numberTT = $CmdLine[1]		; Номер торговой точки
 $PathToFile = "C:\YandexDisk\TT_" & $CmdLine[1] & "\LogInternet.txt"		; Путь к лог файлу
@@ -44,6 +45,7 @@ While 1		; Основной цикл
 	  if $LogFile = -1 Then		; если не получилось получить доступк к файлу
 		 ContinueLoop		;  Переход к следующей итерации
 	  EndIf
+	  $TimeProblem = @Hour * 60 * 60 + @min * 60 + @SEC
 	  FileWrite($LogFile, TimeMs() & "Интернета нет с " & @HOUR & ':' & @MIN & ':' & @SEC & " По ")
 	  FileClose($LogFile)
 	  $Flag = 1
@@ -57,7 +59,7 @@ While 1		; Основной цикл
 			if $LogFile = -1 Then
 			   ContinueLoop
 			EndIf
-			FileWrite($LogFile, @HOUR & ':' & @MIN & ':' & @SEC & @CRLF)
+			FileWrite($LogFile, @HOUR & ':' & @MIN & ':' & @SEC & ToSec($TimeProblem) & @CRLF)
 			FileClose($LogFile)
 		 EndIf
 		 Sleep(2000)
@@ -68,4 +70,13 @@ WEnd
 
 Func TimeMs()
    Return ">  " & @MDAY & '.' & @MON & '.' & @YEAR & "  " & @HOUR & ':' & @MIN & ':' & @SEC & @TAB
+EndFunc
+
+Func ToSec ($InTime)
+   $InTime = (@Hour * 60 * 60 + @min * 60 + @SEC) - $InTime
+   $hour = Int ($InTime/3600)
+   $InTime = $InTime - ($hour * 3600)
+   $min = Int($InTime/60)
+   $sec = $InTime - ($min * 60)
+   Return " [" & $hour & ":" & $min & ":" & $sec & "]"
 EndFunc
